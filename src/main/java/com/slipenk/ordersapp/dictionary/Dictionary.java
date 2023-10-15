@@ -8,19 +8,17 @@ public class Dictionary {
     // paths
     public static final String ORDER_APP_PATH = SLASH + "orders-app";
     public static final String GET_PRODUCTS_PATH = SLASH + "getProducts";
-    public static final String ADD_PRODUCTS_PATH = SLASH + "addProducts";
-    public static final String ADD_ORDER_PATH = SLASH + "addOrders";
     public static final String GET_PRODUCTS_FULL_PATH = ORDER_APP_PATH + GET_PRODUCTS_PATH;
+    public static final String ADD_PRODUCTS_PATH = SLASH + "addProducts";
     public static final String ADD_PRODUCTS_FULL_PATH = ORDER_APP_PATH + ADD_PRODUCTS_PATH;
+    public static final String ADD_ORDER_PATH = SLASH + "addOrders";
     public static final String ADD_ORDER_FULL_PATH = ORDER_APP_PATH + ADD_ORDER_PATH;
+    public static final String PAY_ORDER_PATH = SLASH + "payOrders";
+    public static final String PAY_ORDER_FULL_PATH = ORDER_APP_PATH + PAY_ORDER_PATH;
 
     public static final String INSERT_DATA_SQL_PATH = SLASH + "insertData.sql";
 
     //messages
-    public static final String PRODUCTS_WITH_SIZE = "Products with size ";
-    public static final String WERE_ADDED_SUCCESSFULLY = " were added successfully.";
-    public static final String ERROR_WITH_CONFIG_SECURITY = "Error with configuring security.";
-    public static final String ERROR_DURING_CONVERSION_INTO_JSON = "Error during conversion into JSON.";
     public static final String ERROR_PRODUCT_NOT_FOUND = "Product not found.";
     public static final String CANNOT_BUY = "You cannot buy more than we have.";
 
@@ -46,6 +44,8 @@ public class Dictionary {
     public static final String PASSWORD = "password";
     public static final String ENABLED = "enabled";
     public static final String OWN_USER = "ownUser";
+    public static final String CREATED_DATE_TIME = "created_date_time";
+    public static final String ORDERED_PRODUCT = "orderedProduct";
 
     //for tests
     public static final String SLIPENK = "slipenk";

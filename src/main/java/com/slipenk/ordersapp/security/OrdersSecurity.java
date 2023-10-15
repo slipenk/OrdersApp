@@ -1,12 +1,10 @@
 package com.slipenk.ordersapp.security;
 
 import com.slipenk.ordersapp.entity.Role;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
@@ -18,8 +16,8 @@ import java.util.logging.Logger;
 
 import static com.slipenk.ordersapp.dictionary.Dictionary.ADD_ORDER_FULL_PATH;
 import static com.slipenk.ordersapp.dictionary.Dictionary.ADD_PRODUCTS_FULL_PATH;
-import static com.slipenk.ordersapp.dictionary.Dictionary.ERROR_WITH_CONFIG_SECURITY;
 import static com.slipenk.ordersapp.dictionary.Dictionary.GET_PRODUCTS_FULL_PATH;
+import static com.slipenk.ordersapp.dictionary.Dictionary.PAY_ORDER_FULL_PATH;
 
 @Configuration
 public class OrdersSecurity {
@@ -41,10 +39,11 @@ public class OrdersSecurity {
                                 .antMatchers(HttpMethod.POST, ADD_PRODUCTS_FULL_PATH).hasRole(Role.MANAGER.name())
                                 .antMatchers(HttpMethod.GET, GET_PRODUCTS_FULL_PATH).hasRole(Role.CLIENT.name())
                                 .antMatchers(HttpMethod.POST, ADD_ORDER_FULL_PATH).hasRole(Role.CLIENT.name())
+                                .antMatchers(HttpMethod.POST, PAY_ORDER_FULL_PATH).hasRole(Role.CLIENT.name())
                                 .and()
                                 .httpBasic();
                     } catch (Exception e) {
-                        logger.log(Level.SEVERE, ERROR_WITH_CONFIG_SECURITY);
+                        logger.log(Level.SEVERE, e.getMessage());
                     }
                 }
         );

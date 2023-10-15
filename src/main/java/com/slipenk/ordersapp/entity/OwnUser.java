@@ -1,5 +1,6 @@
 package com.slipenk.ordersapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,8 +17,8 @@ import java.util.List;
 import java.util.Set;
 
 import static com.slipenk.ordersapp.dictionary.Dictionary.ENABLED;
-import static com.slipenk.ordersapp.dictionary.Dictionary.PASSWORD;
 import static com.slipenk.ordersapp.dictionary.Dictionary.OWN_USER;
+import static com.slipenk.ordersapp.dictionary.Dictionary.PASSWORD;
 import static com.slipenk.ordersapp.dictionary.Dictionary.USERNAME;
 import static com.slipenk.ordersapp.dictionary.Dictionary.USERS;
 
@@ -48,5 +49,6 @@ public class OwnUser {
     @OneToMany(
             mappedBy = OWN_USER,
             cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Order> orders;
 }

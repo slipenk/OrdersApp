@@ -15,8 +15,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.sql.Timestamp;
 import java.util.List;
 
+import static com.slipenk.ordersapp.dictionary.Dictionary.CREATED_DATE_TIME;
 import static com.slipenk.ordersapp.dictionary.Dictionary.ID;
 import static com.slipenk.ordersapp.dictionary.Dictionary.ORDER;
 import static com.slipenk.ordersapp.dictionary.Dictionary.ORDERS;
@@ -38,6 +40,9 @@ public class Order {
 
     @Column(name = PAID, nullable = false)
     private boolean paid;
+
+    @Column(name = CREATED_DATE_TIME, nullable = false)
+    private Timestamp createdDateTime;
 
     @ManyToOne
     @JoinColumn(name = USERNAME)

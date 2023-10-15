@@ -9,7 +9,7 @@ INSERT INTO authorities(id, authority, username) values (11, 'ROLE_MANAGER', 'sl
 INSERT INTO authorities(id, authority, username) values (12, 'ROLE_CLIENT', 'slipenk');
 INSERT INTO authorities(id, authority, username) values (13, 'ROLE_CLIENT', 'salah');
 
-INSERT INTO orders(id, paid, username) values (11, FALSE, 'salah');
+INSERT INTO orders(id, paid, created_date_time, username) values (11, FALSE, NOW(), 'salah');
 
 INSERT INTO order_items(id, quantity, order_id, product_id) values (11, 5, 11, 11);
 INSERT INTO order_items(id, quantity, order_id, product_id) values (12, 10, 11, 12);

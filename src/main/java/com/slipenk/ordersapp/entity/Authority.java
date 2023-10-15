@@ -1,5 +1,6 @@
 package com.slipenk.ordersapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,5 +38,6 @@ public class Authority {
 
     @ManyToOne
     @JoinColumn(name = USERNAME)
+    @JsonIgnore
     private OwnUser ownUser;
 }

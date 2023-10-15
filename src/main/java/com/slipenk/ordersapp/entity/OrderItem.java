@@ -1,5 +1,6 @@
 package com.slipenk.ordersapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import static com.slipenk.ordersapp.dictionary.Dictionary.ID;
@@ -38,12 +38,13 @@ public class OrderItem {
     @Column(name = QUANTITY, nullable = false)
     private int quantity;
 
-    @OneToOne
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = PRODUCT_ID)
     private Product orderedProduct;
 
     @ManyToOne
     @JoinColumn(name = ORDER_ID)
+    @JsonIgnore
     private Order order;
 
 }

@@ -8,8 +8,11 @@ import com.slipenk.ordersapp.exceptions.CustomNotFoundException;
 import com.slipenk.ordersapp.repository.OrderRepository;
 import com.slipenk.ordersapp.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +38,17 @@ public class OrderService {
                 proceedWithProduct(orderItem.getOrderedProduct(), orderItem);
             }
         }
-        return orderRepository.saveAll(orders);
+        return new ArrayList<>(orderRepository.saveAll(orders));
+    }
+
+    @Scheduled(fixedDelay = 10 * 60 * 1000)
+    public void cleanupNotPaidOrders() {
+        List<Order> notPaidOrders = orderRepository
+                .findByPaidAndCreatedDateTimeBefore(Boolean.FALSE, new Timestamp(System.currentTimeMillis() - 10 * 60 * 1000));
+
+        if (!notPaidOrders.isEmpty()) {
+            orderRepository.deleteAll(notPaidOrders);
+        }
     }
 
     private void proceedWithProduct(Product product, OrderItem orderItem) {
@@ -63,5 +76,13 @@ public class OrderService {
     }
 
     private void removeTheResidue(Product product, int residue) {
+        product.setTotalQuantity(residue);
+    }
+
+    public List<Order> payOrders(List<Order> orders) {
+        for (Order order : orders) {
+            order.setPaid(Boolean.TRUE);
+        }
+        return new ArrayList<>(orderRepository.saveAll(orders));
     }
 }

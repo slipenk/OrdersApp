@@ -1,8 +1,6 @@
 package com.slipenk.ordersapp.controller;
 
 import com.slipenk.ordersapp.entity.Order;
-import com.slipenk.ordersapp.entity.Product;
-import com.slipenk.ordersapp.repository.OrderRepository;
 import com.slipenk.ordersapp.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,8 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.slipenk.ordersapp.dictionary.Dictionary.ADD_PRODUCTS_PATH;
+import static com.slipenk.ordersapp.dictionary.Dictionary.ADD_ORDER_PATH;
 import static com.slipenk.ordersapp.dictionary.Dictionary.ORDER_APP_PATH;
+import static com.slipenk.ordersapp.dictionary.Dictionary.PAY_ORDER_PATH;
 
 @RestController
 @RequestMapping(ORDER_APP_PATH)
@@ -26,9 +25,14 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping(ADD_PRODUCTS_PATH)
-    public List<Order> addOrders(@RequestBody List<Order> order) {
-        return orderService.addOrders(order);
+    @PostMapping(ADD_ORDER_PATH)
+    public List<Order> addOrders(@RequestBody List<Order> orders) {
+        return orderService.addOrders(orders);
+    }
+
+    @PostMapping(PAY_ORDER_PATH)
+    public List<Order> payOrders(@RequestBody List<Order> orders) {
+        return orderService.payOrders(orders);
     }
 
 }

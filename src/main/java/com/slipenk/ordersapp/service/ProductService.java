@@ -5,7 +5,7 @@ import com.slipenk.ordersapp.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,9 +18,8 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    @Transactional
-    public void addProducts(List<Product> productList) {
-        productRepository.saveAll(productList);
+    public List<Product> addProducts(List<Product> productList) {
+        return new ArrayList<>(productRepository.saveAll(productList));
     }
 
     public List<Product> getProducts() {

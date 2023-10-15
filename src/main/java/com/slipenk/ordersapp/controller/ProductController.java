@@ -11,12 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.slipenk.ordersapp.dictionary.Dictionary.ADD_ORDER_PATH;
 import static com.slipenk.ordersapp.dictionary.Dictionary.ADD_PRODUCTS_PATH;
 import static com.slipenk.ordersapp.dictionary.Dictionary.GET_PRODUCTS_PATH;
 import static com.slipenk.ordersapp.dictionary.Dictionary.ORDER_APP_PATH;
-import static com.slipenk.ordersapp.dictionary.Dictionary.PRODUCTS_WITH_SIZE;
-import static com.slipenk.ordersapp.dictionary.Dictionary.WERE_ADDED_SUCCESSFULLY;
 
 @RestController
 @RequestMapping(ORDER_APP_PATH)
@@ -31,12 +28,11 @@ public class ProductController {
 
     @GetMapping(GET_PRODUCTS_PATH)
     public List<Product> getProducts() {
-       return productService.getProducts();
+        return productService.getProducts();
     }
 
-    @PostMapping(ADD_ORDER_PATH)
-    public String addProducts(@RequestBody List<Product> productList) {
-        productService.addProducts(productList);
-        return PRODUCTS_WITH_SIZE + productList.size() + WERE_ADDED_SUCCESSFULLY;
+    @PostMapping(ADD_PRODUCTS_PATH)
+    public List<Product> addProducts(@RequestBody List<Product> productList) {
+        return productService.addProducts(productList);
     }
 }

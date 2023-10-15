@@ -1,5 +1,6 @@
 package com.slipenk.ordersapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +12,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 import static com.slipenk.ordersapp.dictionary.Dictionary.ID;
 import static com.slipenk.ordersapp.dictionary.Dictionary.NAME;
+import static com.slipenk.ordersapp.dictionary.Dictionary.ORDERED_PRODUCT;
 import static com.slipenk.ordersapp.dictionary.Dictionary.PRICE;
 import static com.slipenk.ordersapp.dictionary.Dictionary.PRODUCTS;
 import static com.slipenk.ordersapp.dictionary.Dictionary.TOTAL_QUANTITY;
@@ -41,4 +45,10 @@ public class Product {
     @Column(name = TOTAL_QUANTITY, nullable = false)
     private int totalQuantity;
 
+    @OneToMany(
+            mappedBy = ORDERED_PRODUCT,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
+    @JsonIgnore
+    private List<OrderItem> orderItems;
 }
