@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static com.slipenk.ordersapp.dictionary.Dictionary.ID;
@@ -40,7 +41,7 @@ public class Product {
     private String name;
 
     @Column(name = PRICE, nullable = false)
-    private double price;
+    private BigDecimal price;
 
     @Column(name = TOTAL_QUANTITY, nullable = false)
     private int totalQuantity;

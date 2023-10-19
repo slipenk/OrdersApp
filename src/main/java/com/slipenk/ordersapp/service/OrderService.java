@@ -10,6 +10,7 @@ import com.slipenk.ordersapp.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class OrderService {
         this.productRepository = productRepository;
     }
 
+    @Transactional
     public List<Order> addOrders(List<Order> orders) {
         for (Order order : orders) {
             for (OrderItem orderItem : order.getOrderItems()) {
@@ -41,7 +43,8 @@ public class OrderService {
         return new ArrayList<>(orderRepository.saveAll(orders));
     }
 
-    @Scheduled(fixedDelay = 10 * 60 * 1000)
+    @Scheduled(fixedDelayString = "${job.delete-unpaid-order.fixed-value}")
+    @Transactional
     public void cleanupNotPaidOrders() {
         List<Order> notPaidOrders = orderRepository
                 .findByPaidAndCreatedDateTimeBefore(Boolean.FALSE, new Timestamp(System.currentTimeMillis() - 10 * 60 * 1000));
@@ -79,6 +82,7 @@ public class OrderService {
         product.setTotalQuantity(residue);
     }
 
+    @Transactional
     public List<Order> payOrders(List<Order> orders) {
         for (Order order : orders) {
             order.setPaid(Boolean.TRUE);

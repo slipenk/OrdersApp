@@ -1,6 +1,7 @@
 package com.slipenk.ordersapp.security;
 
 import com.slipenk.ordersapp.entity.Role;
+import lombok.extern.java.Log;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,17 +13,14 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import static com.slipenk.ordersapp.dictionary.Dictionary.ADD_ORDER_FULL_PATH;
-import static com.slipenk.ordersapp.dictionary.Dictionary.ADD_PRODUCTS_FULL_PATH;
-import static com.slipenk.ordersapp.dictionary.Dictionary.GET_PRODUCTS_FULL_PATH;
+import static com.slipenk.ordersapp.dictionary.Dictionary.ORDERS_FULL_PATH;
 import static com.slipenk.ordersapp.dictionary.Dictionary.PAY_ORDER_FULL_PATH;
+import static com.slipenk.ordersapp.dictionary.Dictionary.PRODUCTS_FULL_PATH;
 
 @Configuration
+@Log
 public class OrdersSecurity {
-
-    private final Logger logger = Logger.getLogger(OrdersSecurity.class.getName());
 
     @Bean
     public UserDetailsManager userDetailsManager(DataSource dataSource) {
@@ -36,14 +34,14 @@ public class OrdersSecurity {
                 {
                     try {
                         configurer
-                                .antMatchers(HttpMethod.POST, ADD_PRODUCTS_FULL_PATH).hasRole(Role.MANAGER.name())
-                                .antMatchers(HttpMethod.GET, GET_PRODUCTS_FULL_PATH).hasRole(Role.CLIENT.name())
-                                .antMatchers(HttpMethod.POST, ADD_ORDER_FULL_PATH).hasRole(Role.CLIENT.name())
+                                .antMatchers(HttpMethod.POST, PRODUCTS_FULL_PATH).hasRole(Role.MANAGER.name())
+                                .antMatchers(HttpMethod.GET, PRODUCTS_FULL_PATH).hasRole(Role.CLIENT.name())
+                                .antMatchers(HttpMethod.POST, ORDERS_FULL_PATH).hasRole(Role.CLIENT.name())
                                 .antMatchers(HttpMethod.POST, PAY_ORDER_FULL_PATH).hasRole(Role.CLIENT.name())
                                 .and()
                                 .httpBasic();
                     } catch (Exception e) {
-                        logger.log(Level.SEVERE, e.getMessage());
+                        log.log(Level.SEVERE, e.getMessage());
                     }
                 }
         );

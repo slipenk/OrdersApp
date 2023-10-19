@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.slipenk.ordersapp.dictionary.Dictionary.ADD_ORDER_PATH;
+import static com.slipenk.ordersapp.dictionary.Dictionary.ORDERS_PATH;
 import static com.slipenk.ordersapp.dictionary.Dictionary.ORDER_APP_PATH;
 import static com.slipenk.ordersapp.dictionary.Dictionary.PAY_ORDER_PATH;
 
@@ -25,7 +25,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping(ADD_ORDER_PATH)
+    @PostMapping(ORDERS_PATH)
     public List<Order> addOrders(@RequestBody List<Order> orders) {
         return orderService.addOrders(orders);
     }

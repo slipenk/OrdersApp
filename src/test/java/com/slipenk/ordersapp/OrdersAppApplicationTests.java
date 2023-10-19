@@ -24,23 +24,25 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.slipenk.ordersapp.dictionary.Dictionary.ADD_ORDER_FULL_PATH;
-import static com.slipenk.ordersapp.dictionary.Dictionary.ADD_PRODUCTS_FULL_PATH;
+import static com.slipenk.ordersapp.dictionary.Dictionary.NUMBER_2200_99;
+import static com.slipenk.ordersapp.dictionary.Dictionary.NUMBER_3200_99;
+import static com.slipenk.ordersapp.dictionary.Dictionary.ORDERS_FULL_PATH;
 import static com.slipenk.ordersapp.dictionary.Dictionary.APPLE_IPHONE_12_64GB_WHITE;
 import static com.slipenk.ordersapp.dictionary.Dictionary.APPLE_IPHONE_14_128GB_MIDNIGHT;
 import static com.slipenk.ordersapp.dictionary.Dictionary.CANNOT_BUY;
 import static com.slipenk.ordersapp.dictionary.Dictionary.DOLLAR_SIGN;
-import static com.slipenk.ordersapp.dictionary.Dictionary.GET_PRODUCTS_FULL_PATH;
 import static com.slipenk.ordersapp.dictionary.Dictionary.INSERT_DATA_SQL_PATH;
 import static com.slipenk.ordersapp.dictionary.Dictionary.IPHONE_11;
 import static com.slipenk.ordersapp.dictionary.Dictionary.IPHONE_13_PRO;
 import static com.slipenk.ordersapp.dictionary.Dictionary.PAY_ORDER_FULL_PATH;
+import static com.slipenk.ordersapp.dictionary.Dictionary.PRODUCTS_FULL_PATH;
 import static com.slipenk.ordersapp.dictionary.Dictionary.SALAH;
 import static com.slipenk.ordersapp.dictionary.Dictionary.SLIPENK;
 import static org.hamcrest.Matchers.greaterThan;
@@ -93,24 +95,24 @@ class OrdersAppApplicationTests {
 
     @Test
     void createProductsAsManager() throws Exception {
-        Product product1 = new Product(0, APPLE_IPHONE_14_128GB_MIDNIGHT, 32000, 100, null);
-        Product product2 = new Product(0, APPLE_IPHONE_12_64GB_WHITE, 22000, 80, null);
+        Product product1 = new Product(0, APPLE_IPHONE_14_128GB_MIDNIGHT, new BigDecimal(NUMBER_3200_99), 100, null);
+        Product product2 = new Product(0, APPLE_IPHONE_12_64GB_WHITE, new BigDecimal(NUMBER_2200_99), 80, null);
 
         List<Product> productList = new ArrayList<>(List.of(product1, product2));
 
         User user = (User) userDetailsService.loadUserByUsername(SLIPENK);
 
-        mockMvc.perform(post(ADD_PRODUCTS_FULL_PATH)
+        mockMvc.perform(post(PRODUCTS_FULL_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(productList))
                         .with(user(user)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath(DOLLAR_SIGN, hasSize(greaterThan(0))))
                 .andExpect(jsonPath("$[0].name", is(APPLE_IPHONE_14_128GB_MIDNIGHT)))
-                .andExpect(jsonPath("$[0].price", is(32000.0)))
+                .andExpect(jsonPath("$[0].price", is(32000.99)))
                 .andExpect(jsonPath("$[0].totalQuantity", is(100)))
                 .andExpect(jsonPath("$[1].name", is(APPLE_IPHONE_12_64GB_WHITE)))
-                .andExpect(jsonPath("$[1].price", is(22000.0)))
+                .andExpect(jsonPath("$[1].price", is(22000.99)))
                 .andExpect(jsonPath("$[1].totalQuantity", is(80)));
 
         Optional<Product> product_1 = productRepository.findByName(APPLE_IPHONE_14_128GB_MIDNIGHT);
@@ -119,23 +121,23 @@ class OrdersAppApplicationTests {
         assertTrue(product_1.isPresent());
         assertTrue(product_2.isPresent());
         assertEquals(APPLE_IPHONE_14_128GB_MIDNIGHT, product_1.get().getName());
-        assertEquals(32000, product_1.get().getPrice());
+        assertEquals(0, new BigDecimal(NUMBER_3200_99).compareTo(product_1.get().getPrice()));
         assertEquals(100, product_1.get().getTotalQuantity());
         assertEquals(APPLE_IPHONE_12_64GB_WHITE, product_2.get().getName());
-        assertEquals(22000, product_2.get().getPrice());
+        assertEquals(0, new BigDecimal(NUMBER_2200_99).compareTo(product_2.get().getPrice()));
         assertEquals(80, product_2.get().getTotalQuantity());
     }
 
     @Test
     void createProductsAsClient() throws Exception {
-        Product product1 = new Product(0, APPLE_IPHONE_14_128GB_MIDNIGHT, 32000, 100, null);
-        Product product2 = new Product(0, APPLE_IPHONE_12_64GB_WHITE, 22000, 80, null);
+        Product product1 = new Product(0, APPLE_IPHONE_14_128GB_MIDNIGHT, new BigDecimal(NUMBER_3200_99), 100, null);
+        Product product2 = new Product(0, APPLE_IPHONE_12_64GB_WHITE, new BigDecimal(NUMBER_2200_99), 80, null);
 
         List<Product> productList = new ArrayList<>(List.of(product1, product2));
 
         User user = (User) userDetailsService.loadUserByUsername(SALAH);
 
-        mockMvc.perform(post(ADD_PRODUCTS_FULL_PATH)
+        mockMvc.perform(post(PRODUCTS_FULL_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(productList))
                         .with(user(user)))
@@ -146,7 +148,7 @@ class OrdersAppApplicationTests {
     void listAllAvailableItems() throws Exception {
         User user = (User) userDetailsService.loadUserByUsername(SALAH);
 
-        mockMvc.perform(get(GET_PRODUCTS_FULL_PATH)
+        mockMvc.perform(get(PRODUCTS_FULL_PATH)
                         .with(user(user)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -168,7 +170,7 @@ class OrdersAppApplicationTests {
 
         User user = (User) userDetailsService.loadUserByUsername(SLIPENK);
 
-        mockMvc.perform(post(ADD_ORDER_FULL_PATH)
+        mockMvc.perform(post(ORDERS_FULL_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(orders))
                         .with(user(user)))
@@ -201,7 +203,7 @@ class OrdersAppApplicationTests {
 
         User user = (User) userDetailsService.loadUserByUsername(SLIPENK);
 
-        mockMvc.perform(post(ADD_ORDER_FULL_PATH)
+        mockMvc.perform(post(ORDERS_FULL_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(orders))
                         .with(user(user)))

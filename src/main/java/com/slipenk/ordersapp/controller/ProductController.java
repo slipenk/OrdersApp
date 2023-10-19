@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.slipenk.ordersapp.dictionary.Dictionary.ADD_PRODUCTS_PATH;
-import static com.slipenk.ordersapp.dictionary.Dictionary.GET_PRODUCTS_PATH;
 import static com.slipenk.ordersapp.dictionary.Dictionary.ORDER_APP_PATH;
+import static com.slipenk.ordersapp.dictionary.Dictionary.PRODUCTS_PATH;
 
 @RestController
 @RequestMapping(ORDER_APP_PATH)
@@ -26,12 +25,12 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping(GET_PRODUCTS_PATH)
+    @GetMapping(PRODUCTS_PATH)
     public List<Product> getProducts() {
         return productService.getProducts();
     }
 
-    @PostMapping(ADD_PRODUCTS_PATH)
+    @PostMapping(PRODUCTS_PATH)
     public List<Product> addProducts(@RequestBody List<Product> productList) {
         return productService.addProducts(productList);
     }
